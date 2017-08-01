@@ -6,10 +6,16 @@
 5 bowtie-build /home/ct/m6a_seq/hg38.fa  h38_index ## 做hg38的index
 6 bowtie -p 16 -m 5 -a --sam --best --strata /home/ct/m6a_seq/hg38/hg38/h38_index /home/ct/m6a_seq/Ip.fastq > Ip.sam #  利用bowtie做mapping
 7  macs14 -t ./Ip.sam -c ./Input.sam --name=m6A --format="SAM" --gsize=282000000 --tsize=36 --nomodel --shiftsize=50  -w -S 2>macs.out #macs得到富集区域
-8 awk '{if($9<=5) print }' ./m6A_peaks.xls > m6A_sig_peaks.xls #将 FDR < 5%部分整合到m6A_sig_peaks.xls
-9 awk '{if($1~/^[0-9]+$/) {print $1 "\t" $2/2.67} else print}' ./m6A_MACS_wiggle/treat/m6A_treat_afterfiting_all.wig.gz > IP_norm.wig # 标准化
+8 awk '{if($9<=5) print }' ./m6A_peaks.xls > m6A_sig_peaks.xls #将 FDR < 5%部分整合到m6A_sig_peaks.xls 假阳性
+9 awk '{if($1~/^[0-9]+$/) {print $1 "\t" $2/2.67} else print}' ./m6A_MACS_wiggle/treat/m6A_treat_afterfiting_all.wig > IP_norm.wig # 标准化 注意wig文件一定先解压缩
 10  grep -a -v ^track ./IP_norm.wig | ./software/wigToBigWig -clip stdin ./software/hg19.chrom.sizes  IP_norm.bw 
 11  sort -k8,8 -n -r ./m6A_sig_peaks.xls |head -1000 |awk '{summit=$2-1+$5; print $1 "\t" summit-51 "\t" summit+50 }' > bestPeaks.location
 12 awk '{print "chr" $0}' ./Homo_sapiens.GRCh37.67.gtf > genes.gtf
 13 intersectBed -wo -a bestPeaks.location -b genes.gtf | awk -v OFS="\t" '{print $1,$2,$3,"*","*",$10}'|uniq > bestPeaks.bed
-14 fastaFromBed -s -fi ./hg38/hg38/hg38.fa -bed bestPeaks.bed -fo bestPeaks.fa
+14 fastaFromBed -s -fi ./hg38/hg38/hg38.fa -bed bestPeaks.bed -fo bestPeaks.fa #找到bestPeaks的序列                  
+15 meme bestPeaks.fa -dna -nmotifs 3 -maxsize 1000000 -o bestPeaks_meme # de novo motif finding
+16 awk '{if($1~/[^#]/) {summit=$2-1+$5; print $1 "\t" summit-151 "\t" summit+150} }' m6A_sig_peaks.xls > m6A_sig_peaks_summit.location
+17 intersectBed -wo -a m6A_sig_peaks_summit.location -b genes.gtf | awk -v OFS="\t" '{print $1,$2,$3,"*","*",$10}'|uniq > m6A_sig_peaks_summit.bed
+18 fastaFromBed -s -fi ./hg38/hg38/hg38.fa -bed m6A_sig_peaks_summit.bed -fo m6A_sig_peaks_summit.fa
+19  awk '{if($1~/[^#]/) print $1 "\t" $2 "\t" $3}' ./m6A_sig_peaks.xls > m6A_sig_peaks_PAinput.txt
+20 java -jar -Xmx512m /home/ct/src/PeakAnnotator_Java_1.4/PeakAnnotator.jar -u ndg -p m6A_sig_peaks_PAinput.txt -a genes.gtf -g all -o ./
