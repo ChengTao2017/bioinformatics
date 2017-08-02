@@ -19,3 +19,4 @@
 18 fastaFromBed -s -fi ./hg38/hg38/hg38.fa -bed m6A_sig_peaks_summit.bed -fo m6A_sig_peaks_summit.fa
 19  awk '{if($1~/[^#]/) print $1 "\t" $2 "\t" $3}' ./m6A_sig_peaks.xls > m6A_sig_peaks_PAinput.txt
 20 java -jar -Xmx512m /home/ct/src/PeakAnnotator_Java_1.4/PeakAnnotator.jar -u ndg -p m6A_sig_peaks_PAinput.txt -a genes.gtf -g all -o ./
+21 samtools view -bS aln.sam > aln.bam #将bowtie mapping 后的sam文件转化为bam文件，-b指定输出bam文件,-S制定输入sam 文件
