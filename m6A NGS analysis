@@ -22,4 +22,4 @@
 21 samtools view -bS aln.sam > aln.bam #将bowtie mapping 后的sam文件转化为bam文件，-b指定输出bam文件,-S制定输入sam 文件
 22 samtools  sort  aln.bam  aln.sorted # sort bam文件
 23 samtools index aln.sorted.bam  # 做index
-
+cutadapt -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACGCCAATATCTCGTATGC -a "A{10}" -A GATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCG -e 0.1 -O 5 -m 20  -n  2 --pair-filter=both  -q 15,10 -o out.R1.fastq -p out.R2.fastq reads.R1.fastq reads2.R2.fastq #利用cutadapt进行去除接头和质控
