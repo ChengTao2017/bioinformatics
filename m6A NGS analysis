@@ -23,3 +23,4 @@
 22 samtools  sort  aln.bam  aln.sorted # sort bam文件
 23 samtools index aln.sorted.bam  # 做index
 cutadapt -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACGCCAATATCTCGTATGC -a "A{10}" -A GATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCG -e 0.1 -O 5 -m 20  -n  2 --pair-filter=both  -q 15,10 -o out.R1.fastq -p out.R2.fastq reads.R1.fastq reads2.R2.fastq #利用cutadapt进行去除接头和质控
+fastqc -o . -t 8 file.fq
