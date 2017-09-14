@@ -25,6 +25,86 @@
 24 cutadapt -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACGCCAATATCTCGTATGC -a "A{10}" -A GATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCG -e 0.1 -O 5 -m 20  -n  2 --pair-filter=both  -q 15,10 -o out.R1.fastq -p out.R2.fastq reads.R1.fastq reads2.R2.fastq #利用cutadapt进行去除接头和质控
 25 fastqc -o . -t 8 file.fq
 26 java -jar /home/ct/software/trimmomatic/classes/trimmomatic.jar PE -threads 10 -phred33 LC1705120067-SiCtrl-for-T-K-IP-1_combined_R1.fastq LC1705120067-SiCtrl-for-T-K-IP-1_combined_R2.fastq LC1705120067-SiCtrl-for-T-K-IP-1_combined_R1.clean.fastq LC1705120067-SiCtrl-for-T-K-IP-1_combined_R1.unpaired.fastq LC1705120067-SiCtrl-for-T-K-IP-1_combined_R2.clean.fastq LC1705120067-SiCtrl-for-T-K-IP-1_combined_R2.unpaired.fastq ILLUMINACLIP:/home/ct/software/trimmomatic/adapters/TruSeq3-PE_m6A.fa:2:30:10:8:true LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:50#使用trimmomatic对原始pe数据质控
+27 awk '{summit=$5;print $1 "\t" summit-1 "\t" summit }' ./siKIAA1429_m6A_sig_peaks.xls > siKIAA1429_m6A_sig_peaks.location
+28 intersectBed -wo -a siKIAA1429_m6A_sig_peaks.location -b /home/ct/m6a_seq/hg19/bowtie2_build_hg19/bowtie2_hg19.gtf | awk -v OFS="\t" '{print $1,$2,$3,"*","*",$10}' | uniq > siKIAA1429_m6A_bestpeaks.bed
+29 perl /home/ct/software/metaplotr_script/annotate_bed_file.pl --bed siKIAA1429_m6A_bestpeaks.bed --bed2 /home/ct/hg19_annot.sorted.bed > annot_siKIAA1429_m6A_bestpeaks_sorted.bed
+30 perl /home/ct/software/metaplotr_script/rel_and_abs_dist_calc.pl --bed annot_siKIAA1429_m6A_bestpeaks_sorted.bed --region /home/ct/region.size.txt >siKIAA1429_m6a.dist.measures.txt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
