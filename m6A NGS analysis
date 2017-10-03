@@ -29,7 +29,7 @@
 28 intersectBed -wo -a siKIAA1429_m6A_sig_peaks.location -b /home/ct/m6a_seq/hg19/bowtie2_build_hg19/bowtie2_hg19.gtf | awk -v OFS="\t" '{print $1,$2,$3,"*","*",$10}' | uniq > siKIAA1429_m6A_bestpeaks.bed
 29 perl /home/ct/software/metaplotr_script/annotate_bed_file.pl --bed siKIAA1429_m6A_bestpeaks.bed --bed2 /home/ct/hg19_annot.sorted.bed > annot_siKIAA1429_m6A_bestpeaks_sorted.bed
 30 perl /home/ct/software/metaplotr_script/rel_and_abs_dist_calc.pl --bed annot_siKIAA1429_m6A_bestpeaks_sorted.bed --region /home/ct/region.size.txt >siKIAA1429_m6a.dist.measures.txt
-
+31 perl /home/ct/software/bin/findMotifsGenome.pl ./siKIAA_sig5000_enrich.bed /home/ct/m6a_seq/hg19/bowtie2_build_hg19/bowtie2_hg19_index.fa  homer_motif -size 101 -mask
 
 
 
