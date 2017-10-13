@@ -31,8 +31,8 @@
 30 perl /home/ct/software/metaplotr_script/rel_and_abs_dist_calc.pl --bed annot_siKIAA1429_m6A_bestpeaks_sorted.bed --region /home/ct/region.size.txt >siKIAA1429_m6a.dist.measures.txt
 31 perl /home/ct/software/bin/findMotifsGenome.pl ./siKIAA_sig5000_enrich.bed /home/ct/m6a_seq/hg19/bowtie2_build_hg19/bowtie2_hg19_index.fa  homer_motif -size 101 -mask
 32  tophat -p 4 -G /home/ct/m6a_seq/hg19/bowtie2_build_hg19/bowtie2_hg19.gtf -o HeLa-IP_1.clean_out /home/ct/m6a_seq/hg19/bowtie2_build_hg19/bowtie2_hg19_index ./R17007215-HeLa-IP-1_combined_R1.clean.fastq ./R17007215-HeLa-IP-1_combined_R2.clean.fastq
-33 
-
+33 pdf(file="scatter.pdf")
+34 dev.off()
 
 
 
