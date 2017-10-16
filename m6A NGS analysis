@@ -33,7 +33,7 @@
 32  tophat -p 4 -G /home/ct/m6a_seq/hg19/bowtie2_build_hg19/bowtie2_hg19.gtf -o HeLa-IP_1.clean_out /home/ct/m6a_seq/hg19/bowtie2_build_hg19/bowtie2_hg19_index ./R17007215-HeLa-IP-1_combined_R1.clean.fastq ./R17007215-HeLa-IP-1_combined_R2.clean.fastq
 33 pdf(file="scatter.pdf")
 34 dev.off()
-
+35 h <- h + theme(axis.text.x=element_text(size=14),axis.text.y=element_text(size=6))#heatmap
 
 
 
