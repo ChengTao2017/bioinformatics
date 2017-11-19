@@ -34,7 +34,7 @@
 33 pdf(file="scatter.pdf")
 34 dev.off()
 35 h <- h + theme(axis.text.x=element_text(size=14),axis.text.y=element_text(size=6))#heatmap
-
+36 genomeCoverageBed -bg -ibam siKIAA-1429-input_2accepted_hits.bam -g /home/ct/hg19.chrom.sizes -split > siKIAA-1429_input_2.bedgraph
 
 
 
